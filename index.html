@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gregory Bailly — Portfolio BTS SIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e17;
+      --bg2: #0f1520;
+      --card: #131b2e;
+      --border: #1e2d47;
+      --accent: #00d4ff;
+      --accent2: #7c3aed;
+      --accent3: #10b981;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 64px;
+      background: rgba(10,14,23,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex; gap: 0.25rem; list-style: none;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 0.45rem 1rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+      background: rgba(0,212,255,0.1);
+    }
+
+    /* hamburger */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer;
+      background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* mobile nav */
+    .mobile-nav {
+      display: none; flex-direction: column;
+      position: fixed; top: 64px; left: 0; right: 0;
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem; z-index: 99;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      color: var(--text); text-decoration: none; font-weight: 600;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+      font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+
+    /* ── SECTIONS ── */
+    section {
+      min-height: 100vh;
+      padding: 100px 2rem 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section.narrow { max-width: 820px; }
+
+    /* ── HERO ── */
+    #accueil {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      min-height: 100vh;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 2rem 80px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* hero visual */
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+
+    .hero-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 340px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    .hero-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-card-name { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .hero-card-role { font-size: 0.8rem; color: var(--accent); font-family: 'Space Mono', monospace; margin-bottom: 1.5rem; }
+
+    .hero-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem;
+    }
+
+    .hero-stat-val { font-size: 1.3rem; font-weight: 800; color: var(--accent); font-family: 'Space Mono', monospace; }
+    .hero-stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ── SECTION TITLES ── */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .section-title span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      max-width: 600px;
+    }
+
+    .divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      margin: 1rem 0 2.5rem;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(0,212,255,0.3);
+      transform: translateY(-3px);
+    }
+
+    /* ── PARCOURS ── */
+    .timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .timeline-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      padding-top: 0.15rem;
+      text-align: right;
+    }
+
+    .timeline-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      left: -8px; top: 20px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 10px rgba(0,212,255,0.5);
+    }
+
+    .timeline-content h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .timeline-content p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── INGETIS ── */
+    .school-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .school-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.2s;
+    }
+    .school-card:hover { border-color: rgba(0,212,255,0.3); }
+
+    .school-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .school-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .school-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* BTS SIO options */
+    .options-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem; margin-top: 1.5rem;
+    }
+
+    .option-card {
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .option-card.sisr {
+      background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(0,212,255,0.02));
+      border-color: rgba(0,212,255,0.2);
+    }
+
+    .option-card.slam {
+      background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(124,58,237,0.02));
+      border-color: rgba(124,58,237,0.2);
+    }
+
+    .option-card .tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .option-card.sisr .tag { background: rgba(0,212,255,0.15); color: var(--accent); }
+    .option-card.slam .tag { background: rgba(124,58,237,0.15); color: #a78bfa; }
+
+    .option-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .option-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── ENTREPRISE ── */
+    .company-hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-bottom: 2rem;
+    }
+
+    .company-logo {
+      width: 80px; height: 80px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1a2d4d, #0f1a2e);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+
+    .company-name { font-size: 2rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .company-sub { font-size: 0.85rem; color: var(--accent); font-family: 'Space Mono', monospace; margin-bottom: 1rem; }
+
+    .company-services {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .service-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .service-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+    /* ── CV ── */
+    .cv-wrapper {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .cv-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3rem;
+      margin: 2rem 0;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 300px;
+      position: relative;
+    }
+
+    .cv-preview-img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+
+    .cv-download-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      padding: 0.9rem 2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .cv-download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,212,255,0.3);
+    }
+
+    /* ── VEILLE ── */
+    .article-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .article-card:hover { border-color: rgba(0,212,255,0.25); transform: translateY(-2px); }
+
+    .article-meta {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+
+    .article-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      background: rgba(0,212,255,0.1);
+      color: var(--accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid rgba(0,212,255,0.2);
+    }
+
+    .article-source {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+
+    .article-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.4; }
+    .article-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── E5 ── */
+    .e5-wrapper {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+    }
+
+    .e5-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 250px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ── PROJETS ── */
+    .projects-intro {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .projects-intro-icon {
+      width: 56px; height: 56px; flex-shrink: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(124,58,237,0.15));
+      border: 1px solid rgba(0,212,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+
+    .projects-intro p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    .projects-intro strong { color: var(--text); }
+
+    .project-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      transition: border-color 0.25s;
+    }
+    .project-block:hover { border-color: rgba(0,212,255,0.3); }
+
+    .project-header {
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .project-num {
+      flex-shrink: 0;
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .project-block:nth-child(2) .project-num {
+      background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(0,212,255,0.05));
+      border: 1px solid rgba(0,212,255,0.25);
+      color: var(--accent);
+    }
+
+    .project-block:nth-child(3) .project-num {
+      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(124,58,237,0.05));
+      border: 1px solid rgba(124,58,237,0.25);
+      color: #a78bfa;
+    }
+
+    .project-header-info { flex: 1; }
+    .project-header-info h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+
+    .project-tags {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .project-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+      letter-spacing: 0.03em;
+    }
+
+    .project-body { padding: 2rem; }
+
+    .project-desc {
+      font-size: 0.925rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 1.75rem;
+    }
+
+    .project-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .project-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+    }
+
+    .step-dot {
+      flex-shrink: 0;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-top: 0.4rem;
+    }
+
+    .project-block:nth-child(2) .step-dot { background: var(--accent); box-shadow: 0 0 8px rgba(0,212,255,0.5); }
+    .project-block:nth-child(3) .step-dot { background: #a78bfa; box-shadow: 0 0 8px rgba(124,58,237,0.5); }
+
+    .project-step p { font-size: 0.875rem; color: var(--text); line-height: 1.5; }
+    .project-step strong { color: var(--accent); font-size: 0.78rem; font-family: 'Space Mono', monospace; display: block; margin-bottom: 0.2rem; }
+    .project-block:nth-child(3) .project-step strong { color: #a78bfa; }
+
+    .project-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .project-photo {
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .project-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .project-photo:hover img { transform: scale(1.04); }
+
+    .project-photo.wide {
+      grid-column: 1 / -1;
+      aspect-ratio: 16/7;
+    }
+
+    .project-photo-placeholder {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .vlan-diagram {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+    }
+
+    .vlan-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .vlan-item {
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid;
+    }
+
+    .vlan-item.public {
+      background: rgba(16,185,129,0.07);
+      border-color: rgba(16,185,129,0.25);
+    }
+    .vlan-item.employee {
+      background: rgba(0,212,255,0.07);
+      border-color: rgba(0,212,255,0.25);
+    }
+
+    .vlan-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .vlan-item.public .vlan-label { color: #10b981; }
+    .vlan-item.employee .vlan-label { color: var(--accent); }
+
+    .vlan-item p { color: var(--muted); font-size: 0.75rem; line-height: 1.5; }
+
+    .server-diagram {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .server-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .server-card-mini {
+      border-radius: 10px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      text-align: center;
+    }
+
+    .server-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: #a78bfa;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .server-roles { list-style: none; }
+    .server-roles li {
+      font-size: 0.7rem;
+      color: var(--muted);
+      padding: 0.2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .server-roles li:last-child { border-bottom: none; }
+
+    @media (max-width: 768px) {
+      .project-photos { grid-template-columns: 1fr; }
+      .project-photo.wide { aspect-ratio: 4/3; }
+      .vlan-grid { grid-template-columns: 1fr; }
+      .server-grid { grid-template-columns: 1fr; }
+      .projects-intro { flex-direction: column; gap: 1rem; }
+    }
+
+    /* ── RSS FEED ── */
+    .rss-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      transition: border-color 0.2s, transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .rss-item:hover {
+      border-color: rgba(0,212,255,0.3);
+      transform: translateX(4px);
+    }
+    .rss-item-left {}
+    .rss-item-cat {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .rss-item-cat::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+    .rss-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+    .rss-item p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .rss-item-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 0.15rem;
+    }
+    .rss-item-arrow {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      text-align: right;
+      transition: color 0.2s;
+    }
+    .rss-item:hover .rss-item-arrow { color: var(--accent); }
+
+    .rss-skeleton {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      height: 90px;
+      overflow: hidden;
+      position: relative;
+    }
+    .rss-skeleton::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .rss-error {
+      background: rgba(239,68,68,0.07);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      color: #f87171;
+      font-size: 0.875rem;
+    }
+
+    /* ── GRID BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none; z-index: 0;
+    }
+
+    section, nav, footer { position: relative; z-index: 1; }
+    #accueil { position: relative; z-index: 1; }
+
+    /* ── PAGE DISPLAY ── */
+    .page { display: none; }
+    .page.active { display: block; }
+    #accueil.active { display: grid; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      #accueil {
+        grid-template-columns: 1fr;
+        padding-top: 120px;
+        min-height: auto;
+        gap: 2rem;
+      }
+
+      .hero-visual { order: -1; }
+      .hero-card { max-width: 100%; }
+
+      section { padding: 80px 1.25rem 60px; }
+
+      .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .timeline-date { text-align: left; }
+      .timeline-content::before { display: none; }
+
+      .school-grid { grid-template-columns: 1fr; }
+      .options-grid { grid-template-columns: 1fr; }
+      .company-hero { grid-template-columns: 1fr; }
+      .company-services { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" onclick="showPage('accueil')">GB.DEV</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('accueil')" class="active" id="nav-accueil">Accueil</a></li>
+    <li><a href="#" onclick="showPage('entreprise')" id="nav-entreprise">Entreprise</a></li>
+    <li><a href="#" onclick="showPage('cv')" id="nav-cv">CV</a></li>
+    <li><a href="#" onclick="showPage('projets')" id="nav-projets">Projets</a></li>
+    <li><a href="#" onclick="showPage('e5')" id="nav-e5">Épreuve E5</a></li>
+    <li><a href="#" onclick="showPage('veille')" id="nav-veille">Veille Techno</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#" onclick="showPage('accueil'); closeMobile()">Accueil</a>
+  <a href="#" onclick="showPage('entreprise'); closeMobile()">Entreprise</a>
+  <a href="#" onclick="showPage('cv'); closeMobile()">CV</a>
+  <a href="#" onclick="showPage('projets'); closeMobile()">Projets BTS</a>
+  <a href="#" onclick="showPage('e5'); closeMobile()">Épreuve E5</a>
+  <a href="#" onclick="showPage('veille'); closeMobile()">Veille Technologique</a>
+</div>
+
+<!-- ── PAGE: ACCUEIL ── -->
+<div id="page-accueil" class="page active">
+  <section id="accueil">
+    <!-- Left -->
+    <div class="fade-in">
+      <div class="hero-badge">BTS SIO · Option SISR · Alternance</div>
+      <h1 class="hero-title">
+        Gregory<br><span>Bailly</span>
+      </h1>
+      <p class="hero-desc">
+        Étudiant en BTS SIO SISR passionné par l'informatique, les réseaux et la cybersécurité. Alternant dans une entreprise spécialisée, je développe des compétences techniques concrètes au quotidien.
+      </p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary" onclick="showPage('cv')">
+          📄 Voir mon CV
+        </a>
+        <a href="#" class="btn btn-outline" onclick="showPage('projets')">
+          🗂️ Mes projets E5
+        </a>
+        <a href="#" class="btn btn-outline" onclick="showPage('entreprise')">
+          🏢 Mon entreprise
+        </a>
+      </div>
+    </div>
+    <!-- Right -->
+    <div class="hero-visual fade-in" style="transition-delay:0.15s">
+      <div class="hero-card">
+        <div class="hero-avatar">🖥️</div>
+        <div class="hero-card-name">Gregory Bailly</div>
+        <div class="hero-card-role">BTS SIO SISR · Alternant</div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-val">Bac+2</div>
+            <div class="hero-stat-label">Niveau visé</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-val">SISR</div>
+            <div class="hero-stat-label">Spécialité</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-val">2025</div>
+            <div class="hero-stat-label">Diplôme</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-val">Paris</div>
+            <div class="hero-stat-label">Localisation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parcours -->
+  <section class="narrow">
+    <div class="fade-in">
+      <p class="section-label">Formation</p>
+      <h2 class="section-title">Mon parcours <span>scolaire</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="timeline fade-in">
+      <div class="timeline-item">
+        <div class="timeline-date">Lycée de Cachan</div>
+        <div class="timeline-content">
+          <h3>Bac Pro SN — Option RISC</h3>
+          <p>Baccalauréat Professionnel Systèmes Numériques, option Réseaux Informatiques et Systèmes Communicants, réalisé au Lycée Polyvalent de Cachan.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Ingetis · Paris</div>
+        <div class="timeline-content">
+          <h3>BTS SIO — Option SISR</h3>
+          <p>BTS Services Informatiques aux Organisations, spécialité Solutions d'Infrastructure, Systèmes et Réseaux. Formation en alternance intégrant des projets professionnels concrets.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ingetis + BTS SIO -->
+  <section>
+    <div class="fade-in">
+      <p class="section-label">École & Diplôme</p>
+      <h2 class="section-title">Ingetis & le <span>BTS SIO</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="school-grid fade-in">
+      <div class="school-card">
+        <div class="school-icon" style="background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,212,255,0.05))">🏫</div>
+        <h3>École Ingetis — Paris</h3>
+        <p>Établissement d'enseignement supérieur reconnu pour ses formations en ingénierie et technologie. Ingetis forme des professionnels compétents et opérationnels dans le secteur informatique.</p>
+      </div>
+      <div class="school-card">
+        <div class="school-icon" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(124,58,237,0.05))">🎓</div>
+        <h3>BTS SIO — Bac+2</h3>
+        <p>Le BTS Services Informatiques aux Organisations forme des techniciens spécialisés en informatique. Il se décline en deux options complémentaires selon le profil de l'étudiant.</p>
+      </div>
+    </div>
+    <div class="options-grid fade-in" style="margin-top:1.5rem">
+      <div class="option-card sisr">
+        <span class="tag">Option SISR</span>
+        <h4>Solutions d'Infrastructure, Systèmes et Réseaux</h4>
+        <p>Installation, maintenance et sécurisation des réseaux et serveurs en entreprise.</p>
+      </div>
+      <div class="option-card slam">
+        <span class="tag">Option SLAM</span>
+        <h4>Solutions Logicielles et Applications Métiers</h4>
+        <p>Développement d'applications, de sites web et gestion de bases de données.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── PAGE: ENTREPRISE ── -->
+<div id="page-entreprise" class="page">
+  <section>
+    <div class="fade-in">
+      <p class="section-label">Stage & Alternance</p>
+      <h2 class="section-title">Mon <span>entreprise</span></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="company-hero fade-in">
+      <div class="company-logo">💼</div>
+      <div>
+        <div class="company-name">Extratis</div>
+        <div class="company-sub">Prestataire informatique B2B</div>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.6">
+          Extratis est une société spécialisée dans les services informatiques aux entreprises. Elle accompagne ses clients de A à Z : du conseil à la maintenance en passant par la vente de matériel.
+        </p>
+      </div>
+    </div>
+
+    <div class="fade-in">
+      <p class="section-label" style="margin-bottom:1rem">Services proposés</p>
+      <div class="company-services">
+        <div class="service-item">
+          <span class="service-icon">🧠</span>
+          <div>
+            <strong>Conseil aux entreprises</strong>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.25rem">Accompagnement sur le choix des logiciels et systèmes informatiques adaptés.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon">🔧</span>
+          <div>
+            <strong>Installation & Configuration</strong>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.25rem">Déploiement et configuration de matériel informatique en environnement professionnel.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon">🛒</span>
+          <div>
+            <strong>Vente d'équipements</strong>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.25rem">Fourniture d'ordinateurs, accessoires et équipements informatiques variés.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon">🛡️</span>
+          <div>
+            <strong>Assistance & Maintenance</strong>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:0.25rem">Support technique et maintenance préventive ou curative du parc informatique.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── PAGE: CV ── -->
+<div id="page-cv" class="page">
+  <section class="narrow">
+    <div class="fade-in">
+      <p class="section-label">Curriculum Vitae</p>
+      <h2 class="section-title">Mon <span>CV</span></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="cv-wrapper fade-in">
+      <p style="color:var(--muted);font-size:0.9rem">Mon curriculum vitae détaillant mes expériences, formations et compétences techniques.</p>
+      <div class="cv-preview">
+        <img
+          src="https://7a68350c43.cbaul-cdnwnd.com/9136466f53d3516210b9160fe9f20ba6/200000021-5f17c5f17e/CV_2025-12-03_Gr%C3%A9gory_Bailly%20Bauchet_page-0001-3.jpeg?ph=7a68350c43"
+          alt="CV Gregory Bailly"
+          class="cv-preview-img"
+          onerror="this.parentNode.innerHTML='<p style=\'color:var(--muted);font-size:0.9rem\'>Aperçu non disponible — Téléchargez le CV ci-dessous</p>'"
+        >
+      </div>
+      <a
+        href="https://7a68350c43.cbaul-cdnwnd.com/9136466f53d3516210b9160fe9f20ba6/200000020-a69b2a69b4/CV_2025-12-03_Gr%C3%A9gory_Bailly%20Bauchet-9.pdf?ph=7a68350c43"
+        class="cv-download-btn"
+        target="_blank"
+        rel="noopener"
+      >
+        ⬇️ Télécharger le CV (PDF)
+      </a>
+    </div>
+  </section>
+</div>
+
+<!-- ── PAGE: VEILLE ── -->
+<div id="page-veille" class="page">
+  <section>
+    <div class="fade-in">
+      <p class="section-label">Cybersécurité · BTS SIO SISR</p>
+      <h2 class="section-title">Veille <span>technologique</span></h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">
+        La veille technologique consiste à surveiller les évolutions du domaine informatique afin d'anticiper les nouvelles menaces et innovations. J'ai orienté ma veille sur la <strong>cybersécurité</strong>.
+      </p>
+    </div>
+
+    <!-- Flux RSS en direct -->
+    <div class="fade-in" style="margin-top:3rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+        <div>
+          <p class="section-label" style="margin-bottom:0.4rem">Flux en direct</p>
+          <h3 style="font-size:1.3rem;font-weight:800">Dernières actus <span style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">ZDNet Cybersécurité</span></h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <span id="rss-status" style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted)">Chargement…</span>
+          <button onclick="loadRSS()" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--accent);padding:0.4rem 0.9rem;border-radius:6px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s" onmouseover="this.style.background='rgba(0,212,255,0.2)'" onmouseout="this.style.background='rgba(0,212,255,0.1)'">↻ Rafraîchir</button>
+        </div>
+      </div>
+
+      <div id="rss-feed" style="display:flex;flex-direction:column;gap:1rem">
+        <!-- Skeleton loaders -->
+        <div class="rss-skeleton"></div>
+        <div class="rss-skeleton"></div>
+        <div class="rss-skeleton"></div>
+        <div class="rss-skeleton"></div>
+        <div class="rss-skeleton"></div>
+      </div>
+
+      <div style="margin-top:1.5rem;text-align:center">
+        <a href="https://www.zdnet.fr/cybersecurite-3900046206q.htm/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:0.8rem;text-decoration:none;font-family:'Space Mono',monospace;transition:color 0.2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">
+          🔗 Voir tous les articles sur ZDNet.fr →
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── PAGE: PROJETS ── -->
+<div id="page-projets" class="page">
+  <section>
+    <div class="fade-in">
+      <p class="section-label">BTS SIO SISR · Épreuve E5</p>
+      <h2 class="section-title">Projets <span>professionnels</span></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="projects-intro fade-in">
+      <div class="projects-intro-icon">🗂️</div>
+      <p>
+        <strong>L'épreuve E5 du BTS SIO</strong> repose sur deux projets en contexte professionnel réel. Ces projets évaluent la capacité à concevoir, déployer et maintenir des solutions d'infrastructure réseau et système, en lien avec l'option <strong>SISR</strong>.
+      </p>
+    </div>
+
+    <!-- PROJET 1 -->
+    <div class="project-block fade-in">
+      <div class="project-header">
+        <div class="project-num">P1</div>
+        <div class="project-header-info">
+          <h2>Mise en place et maintenance d'un parc informatique</h2>
+          <p style="font-size:0.85rem;color:var(--muted);margin-top:0.3rem">Infrastructure réseau physique · Segmentation VLAN · Entreprise Extratis</p>
+          <div class="project-tags">
+            <span class="project-tag">Réseau</span>
+            <span class="project-tag">Switch</span>
+            <span class="project-tag">Routeur</span>
+            <span class="project-tag">VLAN</span>
+            <span class="project-tag">Baie de brassage</span>
+            <span class="project-tag">FAI</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          Dans le cadre de ce premier projet réalisé en entreprise chez <strong style="color:var(--text)">Extratis</strong>, j'ai participé à la mise en place complète d'un parc informatique. L'objectif était d'installer, câbler et configurer une infrastructure réseau fonctionnelle avec une segmentation logique par VLANs pour séparer les accès publics des accès employés.
+        </p>
+
+        <div class="project-steps">
+          <div class="project-step">
+            <div class="step-dot"></div>
+            <div>
+              <strong>Étape 1 — Installation matérielle</strong>
+              <p>Installation de la baie de brassage avec un switch, un routeur et un équipement FAI (Fournisseur d'Accès Internet). Câblage et organisation physique des équipements en rack.</p>
+            </div>
+          </div>
+          <div class="project-step">
+            <div class="step-dot"></div>
+            <div>
+              <strong>Étape 2 — Brassage & configuration réseau</strong>
+              <p>Brassage complet de la baie avec interconnexion des équipements. Configuration du réseau local (LAN) et des interfaces du routeur.</p>
+            </div>
+          </div>
+          <div class="project-step">
+            <div class="step-dot"></div>
+            <div>
+              <strong>Étape 3 — Segmentation VLAN</strong>
+              <p>Mise en place de 2 VLANs distincts sur le switch : un VLAN dédié au réseau public (clients / invités) et un VLAN réservé aux employés, assurant l'isolation du trafic et la sécurité.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="vlan-diagram">
+          <p style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem">Architecture VLAN</p>
+          <div style="text-align:center;margin-bottom:1rem;font-size:0.78rem;color:var(--muted)">
+            🌐 FAI &nbsp;→&nbsp; 🔀 Routeur &nbsp;→&nbsp; 🔌 Switch managé
+          </div>
+          <div class="vlan-grid">
+            <div class="vlan-item public">
+              <div class="vlan-label">🌍 VLAN Public</div>
+              <p>Accès Internet pour les clients et visiteurs. Isolé du réseau interne de l'entreprise pour des raisons de sécurité.</p>
+            </div>
+            <div class="vlan-item employee">
+              <div class="vlan-label">🔒 VLAN Employés</div>
+              <p>Réseau interne sécurisé dédié aux postes de travail et ressources de l'entreprise. Accès contrôlé et protégé.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-photos">
+          <div class="project-photo">
+            <img
+              src="https://7a68350c43.cbaul-cdnwnd.com/9136466f53d3516210b9160fe9f20ba6/200000084-6afe26afe4/20220629_120624.jpeg?ph=7a68350c43"
+              alt="Baie de brassage - Projet 1"
+              onerror="this.parentNode.innerHTML='<div class=\'project-photo-placeholder\'>📷 Photo baie de brassage</div>'"
+            >
+          </div>
+          <div class="project-photo">
+            <img
+              src="https://7a68350c43.cbaul-cdnwnd.com/9136466f53d3516210b9160fe9f20ba6/200000085-8fdd08fdd1/20220623_162551.jpeg?ph=7a68350c43"
+              alt="Configuration réseau - Projet 1"
+              onerror="this.parentNode.innerHTML='<div class=\'project-photo-placeholder\'>📷 Photo configuration</div>'"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJET 2 -->
+    <div class="project-block fade-in">
+      <div class="project-header">
+        <div class="project-num">P2</div>
+        <div class="project-header-info">
+          <h2>Infrastructure Windows Server multi-sites</h2>
+          <p style="font-size:0.85rem;color:var(--muted);margin-top:0.3rem">3 serveurs · 2 segments LAN · DNS · DHCP · NAT · Délégation de zone</p>
+          <div class="project-tags">
+            <span class="project-tag">Windows Server</span>
+            <span class="project-tag">DNS</span>
+            <span class="project-tag">DHCP</span>
+            <span class="project-tag">NAT</span>
+            <span class="project-tag">DHCP Relay</span>
+            <span class="project-tag">Délégation de zone</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          Ce projet consistait à concevoir et déployer une infrastructure réseau complète composée de <strong style="color:var(--text)">trois serveurs Windows Server</strong> (SRVEXO1, SRVEXO2, SRVEXO3) interconnectés sur deux segments LAN distincts. L'objectif était de mettre en place une architecture redondante avec des services DNS et DHCP répartis de manière optimale entre les serveurs.
+        </p>
+
+        <div class="server-diagram">
+          <p style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem;font-family:'Space Mono',monospace">Architecture des 3 serveurs</p>
+          <div class="server-grid">
+            <div class="server-card-mini">
+              <div class="server-name">SRVEXO1</div>
+              <ul class="server-roles">
+                <li>DHCP — LAN 1 & LAN 2</li>
+                <li>DNS primaire</li>
+                <li>Zone YOUPI.TRALALA</li>
+                <li>Délégation → SRVEXO2</li>
+              </ul>
+            </div>
+            <div class="server-card-mini" style="border-color:rgba(124,58,237,0.3);background:rgba(124,58,237,0.05)">
+              <div class="server-name" style="color:#00d4ff">SRVEXO2</div>
+              <ul class="server-roles">
+                <li>Routeur central</li>
+                <li>NAT + DHCP Relay</li>
+                <li>DNS secondaire</li>
+                <li>Accès Internet</li>
+              </ul>
+            </div>
+            <div class="server-card-mini">
+              <div class="server-name">SRVEXO3</div>
+              <ul class="server-roles">
+                <li>DNS primaire</li>
+                <li>Zone TUYARIVERA.1J</li>
+                <li>Failover DHCP</li>
+                <li>Redirection DNS cond.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-steps">
+          <div class="project-step">
+            <div class="step-dot"></div>
+            <div>
+              <strong>SRVEXO2 — Routeur central</strong>
+              <p>SRVEXO2 assure le rôle central de routeur avec les services NAT, DHCP Relay et DNS secondaire, tout en garantissant l'accès Internet à l'ensemble du parc.</p>
+            </div>
+          </div>
+          <div class="project-step">
+            <div class="step-dot"></div>
+            <div>
+              <strong>SRVEXO1 — Services primaires</strong>
+              <p>SRVEXO1 héberge les services DHCP pour les deux LAN ainsi que le DNS primaire de la zone YOUPI.TRALALA, avec une délégation de zone vers SRVEXO2.</p>
+            </div>
+          </div>
+          <div class="project-step">
+            <div class="step-dot"></div>
+            <div>
+              <strong>SRVEXO3 — Redondance & DNS secondaire</strong>
+              <p>SRVEXO3 prend en charge le DNS primaire de la zone TUYARIVERA.1J et assure le basculement DHCP en cas de défaillance, grâce à une redirection conditionnelle DNS mise en place entre les deux serveurs.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-photos">
+          <div class="project-photo wide">
+            <img
+              src="https://7a68350c43.cbaul-cdnwnd.com/9136466f53d3516210b9160fe9f20ba6/200000097-6003160032/CP220-20MAQUETTE20WINDOWS20SERVER20EXO.png?ph=7a68350c43"
+              alt="Maquette Windows Server - Projet 2"
+              style="object-fit:contain;padding:1rem;background:var(--bg)"
+              onerror="this.parentNode.innerHTML='<div class=\'project-photo-placeholder\'>📷 Schéma de la maquette Windows Server</div>'"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!-- ── PAGE: E5 ── -->
+<div id="page-e5" class="page">
+  <section class="narrow">
+    <div class="fade-in">
+      <p class="section-label">BTS SIO 2025</p>
+      <h2 class="section-title">Épreuve <span>E5</span></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="e5-wrapper fade-in">
+      <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem">
+        L'épreuve E5 du BTS SIO est une épreuve professionnelle qui évalue les compétences acquises au cours de la formation et en alternance. Elle porte sur des situations professionnelles réelles, regroupées en deux projets distincts.
+      </p>
+      <a href="#" onclick="showPage('projets')" class="btn btn-primary" style="margin-bottom:2rem;display:inline-flex">
+        🗂️ Voir mes 2 projets E5
+      </a>
+      <div class="e5-preview">
+        <img
+          src="https://7a68350c43.cbaul-cdnwnd.com/9136466f53d3516210b9160fe9f20ba6/200000081-485ca485cb/BTS%20SIO%20-%202025%20-%20Epreuve%20E5%20-gregorybailly_page-0001.jpeg?ph=7a68350c43"
+          alt="Épreuve E5 Gregory Bailly"
+          style="max-width:100%;border-radius:8px;box-shadow:0 24px 60px rgba(0,0,0,0.5);"
+          onerror="this.parentNode.innerHTML='<p style=\'color:var(--muted)\'>Aperçu non disponible</p>'"
+        >
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>Gregory Bailly</span> — Portfolio BTS SIO SISR · Ingetis Paris</p>
+</footer>
+
+<script>
+  // ── NAVIGATION ──
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+    const page = document.getElementById('page-' + name);
+    const link = document.getElementById('nav-' + name);
+
+    if (page) page.classList.add('active');
+    if (link) link.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // re-trigger fade-in animations
+    setTimeout(() => {
+      document.querySelectorAll('#page-' + name + ' .fade-in').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }, i * 100);
+      });
+    }, 50);
+
+    return false;
+  }
+
+  // ── HAMBURGER ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileNav.classList.remove('open');
+  }
+
+  // ── INTERSECTION OBSERVER for fade-in ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── RSS FEED via Claude API ──
+  async function loadRSS() {
+    const container = document.getElementById('rss-feed');
+    const statusEl = document.getElementById('rss-status');
+    if (!container) return;
+
+    // Show skeletons
+    container.innerHTML = Array(5).fill('<div class="rss-skeleton"></div>').join('');
+    statusEl.textContent = 'Chargement…';
+    statusEl.style.color = 'var(--muted)';
+
+    try {
+      // Use a CORS proxy to fetch the RSS feed
+      const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.zdnet.fr/feeds/rss/actualites/');
+      const res = await fetch(proxyUrl);
+      const data = await res.json();
+
+      if (!data.contents) throw new Error('Flux indisponible');
+
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(data.contents, 'text/xml');
+      const items = Array.from(xml.querySelectorAll('item')).slice(0, 8);
+
+      if (!items.length) throw new Error('Aucun article trouvé');
+
+      container.innerHTML = '';
+
+      items.forEach((item, i) => {
+        const title = item.querySelector('title')?.textContent || 'Sans titre';
+        const link  = item.querySelector('link')?.textContent || '#';
+        const desc  = item.querySelector('description')?.textContent?.replace(/<[^>]+>/g, '').trim() || '';
+        const pubDate = item.querySelector('pubDate')?.textContent || '';
+        const category = item.querySelector('category')?.textContent || 'Cybersécurité';
+
+        let dateStr = '';
+        if (pubDate) {
+          try {
+            dateStr = new Date(pubDate).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+          } catch(e) { dateStr = ''; }
+        }
+
+        const el = document.createElement('a');
+        el.className = 'rss-item';
+        el.href = link;
+        el.target = '_blank';
+        el.rel = 'noopener';
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(-12px)';
+        el.innerHTML = `
+          <div class="rss-item-left">
+            <div class="rss-item-cat">ZDNet · ${category}</div>
+            <h4>${title}</h4>
+            ${desc ? `<p>${desc.substring(0, 160)}${desc.length > 160 ? '…' : ''}</p>` : ''}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;flex-shrink:0">
+            ${dateStr ? `<div class="rss-item-date">${dateStr}</div>` : ''}
+            <div class="rss-item-arrow">→</div>
+          </div>
+        `;
+
+        container.appendChild(el);
+
+        // Staggered animation
+        setTimeout(() => {
+          el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }, i * 80);
+      });
+
+      statusEl.textContent = `${items.length} articles · Mis à jour ${new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'})}`;
+      statusEl.style.color = 'var(--accent3)';
+
+    } catch (err) {
+      // Fallback: try alternate proxy
+      try {
+        const proxy2 = 'https://corsproxy.io/?' + encodeURIComponent('https://www.zdnet.fr/feeds/rss/actualites/');
+        const res2 = await fetch(proxy2);
+        const text2 = await res2.text();
+        const parser2 = new DOMParser();
+        const xml2 = parser2.parseFromString(text2, 'text/xml');
+        const items2 = Array.from(xml2.querySelectorAll('item')).slice(0, 8);
+
+        if (!items2.length) throw new Error('vide');
+
+        container.innerHTML = '';
+        items2.forEach((item, i) => {
+          const title = item.querySelector('title')?.textContent || 'Sans titre';
+          const link  = item.querySelector('link')?.textContent || '#';
+          const desc  = item.querySelector('description')?.textContent?.replace(/<[^>]+>/g, '').trim() || '';
+          const pubDate = item.querySelector('pubDate')?.textContent || '';
+          const category = item.querySelector('category')?.textContent || 'Cybersécurité';
+          let dateStr = '';
+          if (pubDate) { try { dateStr = new Date(pubDate).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'}); } catch(e){} }
+
+          const el = document.createElement('a');
+          el.className = 'rss-item';
+          el.href = link; el.target = '_blank'; el.rel = 'noopener';
+          el.style.opacity = '0'; el.style.transform = 'translateX(-12px)';
+          el.innerHTML = `
+            <div class="rss-item-left">
+              <div class="rss-item-cat">ZDNet · ${category}</div>
+              <h4>${title}</h4>
+              ${desc ? `<p>${desc.substring(0,160)}${desc.length>160?'…':''}</p>` : ''}
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;flex-shrink:0">
+              ${dateStr ? `<div class="rss-item-date">${dateStr}</div>` : ''}
+              <div class="rss-item-arrow">→</div>
+            </div>`;
+          container.appendChild(el);
+          setTimeout(() => { el.style.transition = 'opacity 0.4s ease, transform 0.4s ease'; el.style.opacity = '1'; el.style.transform = 'none'; }, i * 80);
+        });
+
+        statusEl.textContent = `${items2.length} articles · ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
+        statusEl.style.color = 'var(--accent3)';
+
+      } catch(err2) {
+        container.innerHTML = `
+          <div class="rss-error">
+            <p style="font-size:1.2rem;margin-bottom:0.5rem">⚠️</p>
+            <p style="font-weight:700;margin-bottom:0.4rem">Flux temporairement indisponible</p>
+            <p style="font-size:0.8rem;opacity:0.8">Le flux RSS de ZDNet ne peut pas être chargé depuis votre navigateur (restriction CORS).<br>Cliquez sur le lien ci-dessous pour consulter les articles directement.</p>
+          </div>`;
+        statusEl.textContent = 'Erreur de chargement';
+        statusEl.style.color = '#f87171';
+      }
+    }
+  }
+
+  // Auto-load RSS when veille page is shown
+  const _origShowPage = showPage;
+  window._rssLoaded = false;
+
+  // Hook into showPage to auto-load RSS
+  const origShowPage = showPage;
+  showPage = function(name) {
+    origShowPage(name);
+    if (name === 'veille' && !window._rssLoaded) {
+      window._rssLoaded = true;
+      loadRSS();
+    }
+  };
+
+  // Initial page load
+  showPage('accueil');
+</script>
+</body>
+</html>
